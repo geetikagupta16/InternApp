@@ -1,0 +1,35 @@
+package repo
+
+import org.specs2.mutable._
+import org.specs2.runner._
+import org.junit.runner._
+import play.api.Application
+import play.api.test.WithApplication
+import play.api.test._
+import play.api.test.Helpers._
+
+import scala.concurrent.Await
+import org.scalatest.time._
+import scala.concurrent.duration._
+
+
+
+/**
+  * Add your spec here.
+  * You can mock out a whole application including requests, plugins etc.
+  * For more information, consult the wiki.
+  */
+@RunWith(classOf[JUnitRunner])
+class LoginController extends Specification {
+
+  "Login Controller " should {
+
+
+    "CHECK FOR LOGIN" in new WithApplication {
+      val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
+      ("email" -> "john@gmail.com", "password" -> "abcdef")).get
+      val result = Await.result(res, 2 seconds)
+      redirectLocation(res) must beSome("/dashboard")
+    }
+  }
+}

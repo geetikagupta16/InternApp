@@ -1,13 +1,13 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{Login, Intern}
+import models.{Language, Login, Intern}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
-import repo.InternRepo
+import repo.{AwardRepo, ProgLanguageRepo, LanguageRepo, InternRepo}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
@@ -15,7 +15,7 @@ import scala.concurrent.Future
 /**
   * Created by knoldus on 8/3/16.
   */
-class DashboardController  @Inject()(internRepo:InternRepo) extends Controller {
+class DashboardController  @Inject()(internRepo:InternRepo)(langRepo:LanguageRepo)(progLangRepo:ProgLanguageRepo)(awardRepo:AwardRepo) extends Controller {
 
   val addAwardForm = Form(
     tuple(
@@ -50,17 +50,60 @@ class DashboardController  @Inject()(internRepo:InternRepo) extends Controller {
 
   }
 
+  def logout=Action{implicit request=>
 
-
-  def addAward() = Action { implicit request =>
-    Ok("In add award")
-
+    Redirect(routes.LoginController.getForm).withNewSession
   }
 
-  def addLanguage() = Action { implicit request =>
-    Ok("In language")
+  def languageDetails() = Action.async({ implicit request =>
 
-  }
+    val futurelang: Future[List[Language]] = langRepo.getAll()
+
+    val res = futurelang.map(x => Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm)))
+    res
+  })
+
+  def addLanguage() = Action.async({ implicit request =>
+    addLangForm.bindFromRequest.fold(
+      formError => Future {
+        BadRequest("ERROR")
+      },
+      langData => {
+        request.session.get("email").map { user => {
+          val res = langRepo.insert(1, langData._1, langData._2, user)
+          res.map(x => Redirect(routes.DashboardController.getDashboard))
+        }
+        }.getOrElse {
+          Future {
+            Unauthorized("Please sign in to see this page...!!!!")
+          }
+        }
+
+      })
+  })
+
+  //def addAward()=Action{Ok("In award")}
+
+def addAward() = Action.async({ implicit request =>
+    addAwardForm.bindFromRequest.fold(
+      formError => Future {
+        BadRequest("ERROR")
+      },
+      awardData => {
+        request.session.get("email").map { user => {
+          val res = awardRepo.insert(awardData._1, awardData._2, awardData._3, user)
+          res.map(x => Redirect(routes.DashboardController.getDashboard))
+        }
+        }.getOrElse {
+          Future {
+            Unauthorized("Please sign in to see this page...!!!!")
+          }
+        }
+
+      })
+  })
+
+
 
   def addProgLanguage() = Action { implicit request =>
     Ok("In Prog Lang")

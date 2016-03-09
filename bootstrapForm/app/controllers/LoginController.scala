@@ -38,9 +38,11 @@ class LoginController @Inject() (internRepo:InternRepo)extends Controller{
       },
       userData => {
         val res: Future[List[Intern]] = internRepo.loginAuth(userData)
-        res.map(x =>if(x.length==1) Ok("Welcome"+x.head.name) else Ok("error"))
+        res.map(x =>if(x.length==1) Redirect(routes.DashboardController.getDashboard).withSession("email"->x.head.email)
 
-      })
+        else Ok("error")
+
+        )})
 
 
   })

@@ -11,6 +11,7 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.driver.JdbcProfile
 import scala.concurrent.Future
 
+import scala.concurrent.ExecutionContext.Implicits.global
 /**
   * Created by knoldus on 8/3/16.
   */
@@ -20,8 +21,16 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
 
   import driver.api._
 
-  def insert(sno:Int,known:String,fluency:String,internId:Int)={
-    val insert=languageTableQuery+=Language(sno,known,fluency,internId)
+  def insert(sno:Int,known:String,fluency:String,email:String)={
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.map(x=>db.run(languageTableQuery+=Language(sno,known,fluency,x.head.id)))
+  }
+
+  def getAll()={
+
+    db.run{languageTableQuery.to[List].result}
+
   }
 
 

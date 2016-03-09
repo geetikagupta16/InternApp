@@ -26,3 +26,5 @@ GET        /adminDashboard                      controllers.DashboardController.
 GET     /getForm                            controllers.LoginController.getForm
 
 POST    /auth                               controllers.LoginController.auth
+
+GET     /logout                          controllers.DashboardController.logout
