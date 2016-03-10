@@ -24,7 +24,7 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
   def insert(sno:Int,known:String,fluency:String,email:String)={
     val getList=internTableQuery.filter(_.email===email).to[List].result
     val res=db.run(getList)
-    res.map(x=>db.run(languageTableQuery+=Language(sno,known,fluency,x.head.id)))
+    res.flatMap(x=>db.run(languageTableQuery+=Language(sno,known,fluency,x.head.id)))
   }
 
   def getAll()={
@@ -32,7 +32,12 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     db.run{languageTableQuery.to[List].result}
 
   }
+/*  def getByInternId(email:String)={
 
+    db.run{internTableQuery.join(languageTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result}
+
+  }
+*/
 
 }
 
@@ -45,7 +50,7 @@ trait LanguageTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcPro
   class LanguageTable(tag: Tag) extends Table[Language](tag, "language") {
 
 
-    def * = (sno,known,fluency,id) <>(Language.tupled, Language.unapply)
+    def * = (sno,known,fluency,internId) <>(Language.tupled, Language.unapply)
 
     def sno= column[Int]("sno",O.AutoInc)
 
@@ -53,11 +58,11 @@ trait LanguageTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcPro
 
     def fluency = column[String]("fluency", O.SqlType("VARCHAR(200"))
 
-    def id=column[Int]("id")
+    def internId=column[Int]("internid")
 
-    def languagePk = primaryKey("language_pk", (sno, id))
+    def languagePk = primaryKey("language_pk", (sno, internId))
 
-    def internId = foreignKey("internId_fk", id,internTableQuery)(_.id)
+    def iId = foreignKey("internId_fk", internId,internTableQuery)(_.id)
 
 
   }

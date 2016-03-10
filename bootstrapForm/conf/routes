@@ -11,8 +11,6 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /webjars/*file                    controllers.WebJarAssets.at(file)
 
 
-
-
 GET     /dashboard                          controllers.DashboardController.getDashboard
 
 POST     /addAward                          controllers.DashboardController.addAward

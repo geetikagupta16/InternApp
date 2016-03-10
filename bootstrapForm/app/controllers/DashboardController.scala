@@ -15,7 +15,7 @@ import scala.concurrent.Future
 /**
   * Created by knoldus on 8/3/16.
   */
-class DashboardController  @Inject()(internRepo:InternRepo)(langRepo:LanguageRepo)(progLangRepo:ProgLanguageRepo)(awardRepo:AwardRepo) extends Controller {
+class DashboardController @Inject()(internRepo: InternRepo)(langRepo: LanguageRepo)(progLangRepo: ProgLanguageRepo)(awardRepo: AwardRepo) extends Controller {
 
   val addAwardForm = Form(
     tuple(
@@ -40,17 +40,34 @@ class DashboardController  @Inject()(internRepo:InternRepo)(langRepo:LanguageRep
   )
 
 
-  def getDashboard() = Action { implicit request =>
-    Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm))
+  def getDashboard() = Action{ implicit request =>
+  /*  request.session.get("email").map { user => {
+      val res = langRepo.getByInternId(user)
+      var lang
+      res.map(x => {
+        //lang = x.head._2
+        Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm))
+
+      })
+      res
+
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+    }
+*/    Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm))
+
   }
 
-  def getAdminDashboard()=Action{
+  def getAdminDashboard() = Action {
     implicit request =>
       Ok(views.html.adminDashboard(addAwardForm, addLangForm, addProgLangForm))
 
   }
 
-  def logout=Action{implicit request=>
+  def logout = Action { implicit request =>
 
     Redirect(routes.LoginController.getForm).withNewSession
   }
@@ -84,7 +101,7 @@ class DashboardController  @Inject()(internRepo:InternRepo)(langRepo:LanguageRep
 
   //def addAward()=Action{Ok("In award")}
 
-def addAward() = Action.async({ implicit request =>
+  def addAward() = Action.async({ implicit request =>
     addAwardForm.bindFromRequest.fold(
       formError => Future {
         BadRequest("ERROR")
@@ -104,13 +121,10 @@ def addAward() = Action.async({ implicit request =>
   })
 
 
-
   def addProgLanguage() = Action { implicit request =>
     Ok("In Prog Lang")
 
   }
-
-
 
 
 }

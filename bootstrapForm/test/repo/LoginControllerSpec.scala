@@ -20,16 +20,31 @@ import scala.concurrent.duration._
   * For more information, consult the wiki.
   */
 @RunWith(classOf[JUnitRunner])
-class LoginController extends Specification {
+class LoginControllerSpec extends Specification {
 
   "Login Controller " should {
 
+
+    "CHECK FOR Rendering of form" in new WithApplication {
+      val res = route(FakeRequest(GET, "/getForm")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+  
 
     "CHECK FOR LOGIN" in new WithApplication {
       val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
       ("email" -> "john@gmail.com", "password" -> "abcdef")).get
       val result = Await.result(res, 2 seconds)
       redirectLocation(res) must beSome("/dashboard")
+    }
+
+
+
+    "CHECK FOR unsucessfull LOGIN" in new WithApplication {
+      val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
+      ("email" -> "jon@gmail.com", "password" -> "abcdef")).get
+      val result = Await.result(res, 2 seconds)
+      redirectLocation(res) must not beSome("/dashboard")
     }
   }
 }

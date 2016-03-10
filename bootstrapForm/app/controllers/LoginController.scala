@@ -38,9 +38,13 @@ class LoginController @Inject() (internRepo:InternRepo)extends Controller{
       },
       userData => {
         val res: Future[List[Intern]] = internRepo.loginAuth(userData)
-        res.map(x =>if(x.length==1) Redirect(routes.DashboardController.getDashboard).withSession("email"->x.head.email)
+        res.map(x =>if(x.length==1 && x.head.password=="admin" && x.head.email=="admin@gmail.com") Redirect(routes.DashboardController.getAdminDashboard).withSession("email"->x.head.email)
 
-        else Ok("error")
+        else if(x.length==1)
+          Redirect(routes.DashboardController.getDashboard).withSession("email"->x.head.email)
+        else
+          Redirect(routes.LoginController.getForm).flashing("error"->"Log in to continue")
+
 
         )})
 

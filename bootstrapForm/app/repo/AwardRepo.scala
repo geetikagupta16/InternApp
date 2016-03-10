@@ -18,9 +18,17 @@ class AwardRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
   def insert(sno:Int,name:String,details:String,email:String)={
     val getList=internTableQuery.filter(_.email===email).to[List].result
     val res=db.run(getList)
-    res.map(x=>db.run(awardTableQuery+=Award(sno,name,details,x.head.id)))
+    res.flatMap(x=>db.run(awardTableQuery+=Award(sno,name,details,x.head.id)))
   }
+def getAll()={
+  db.run(awardTableQuery.to[List].result)
+}
+  /*
+  def getByInternId(email:String)={
 
+    db.run(internTableQuery.join(awardTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result)
+
+  }*/
 }
 
 
@@ -41,7 +49,7 @@ trait AwardTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcProfil
 
     def details = column[String]("details", O.SqlType("VARCHAR(200"))
 
-    def internId=column[Int]("internId")
+    def internId=column[Int]("internid")
 
     def languagePk = primaryKey("award_pk", (id, internId))
 

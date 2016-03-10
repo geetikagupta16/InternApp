@@ -8,7 +8,7 @@ import slick.driver.JdbcProfile
 import scala.concurrent.Future
 
 import models.ProgLanguage
-import repo.ColumnTypeMapper
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * Created by knoldus on 9/3/16.
@@ -20,10 +20,23 @@ class ProgLanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfig
 
   import driver.api._
 
-  def insert(sno:Int,known:String,fluency:String,internId:Int)={
-    val insert=languageTableQuery+=ProgLanguage(sno,known,fluency,internId)
+
+  def insert(sno:Int,known:String,fluency:String,email:String)={
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.flatMap(x=>db.run(progLangTableQuery+=ProgLanguage(sno,known,fluency,x.head.id)))
   }
 
+  def getAll()={
+    db.run(progLangTableQuery.to[List].result)
+  }
+/*
+  def getByInternId(email:String)={
+
+    db.run(internTableQuery.join(progLangTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result)
+
+  }
+*/
 
 }
 
@@ -31,7 +44,7 @@ trait ProgLanguageTable extends InternTable {self: HasDatabaseConfigProvider[Jdb
 
   import driver.api._
 
-  val languageTableQuery = TableQuery[LanguageTable]
+  val progLangTableQuery = TableQuery[LanguageTable]
 
   class LanguageTable(tag: Tag) extends Table[ProgLanguage](tag, "proglanguage") {
 
@@ -44,7 +57,7 @@ trait ProgLanguageTable extends InternTable {self: HasDatabaseConfigProvider[Jdb
 
     def fluency = column[String]("fluency", O.SqlType("VARCHAR(200"))
 
-    def id=column[Int]("id")
+    def id=column[Int]("internid")
 
     def languagePk = primaryKey("language_pk", (sno, id))
 

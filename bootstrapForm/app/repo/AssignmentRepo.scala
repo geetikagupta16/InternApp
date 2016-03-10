@@ -27,6 +27,16 @@ class AssignmentRepo @Inject() (protected val dbConfigProvider: DatabaseConfigPr
     db.run(insertStatement)
   }
 
+  def getAll()={
+    db.run(assignmentTableQuery.to[List].result)
+  }
+/*
+  def getByInternId(email:String)={
+
+    db.run(internTableQuery.join(assignmentTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result)
+
+  }
+*/
 }
 
 trait AssignmentTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcProfile] =>
@@ -40,7 +50,7 @@ trait AssignmentTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcP
 
     def * = (sno, name, date, marks,remarks,internId) <>(Assignment.tupled, Assignment.unapply)
 
-    def sno= column[Int]("sno")
+    def sno= column[Int]("sno",O.AutoInc)
 
     def name = column[String]("name", O.SqlType("VARCHAR(200"))
 
@@ -48,7 +58,7 @@ trait AssignmentTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcP
     def marks = column[Int]("marks")
     def remarks = column[String]("remarks", O.SqlType("VARCHAR(200"))
 
-    def internId=column[Int]("id")
+    def internId=column[Int]("internid")
 
     def assignmentPk = primaryKey("assignment_pk", (sno, internId))
 
