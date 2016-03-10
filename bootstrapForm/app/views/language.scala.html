@@ -1,0 +1,57 @@
+@import b3.vertical.fieldConstructor
+
+@(languages:List[Language],addLangForm:Form[(String,String)])(implicit message:Messages,flash:Flash)
+<h3>Languages</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Languages Known</th>
+        <th>Fluency</th>
+        <th></th>
+
+        <th></th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+              @for(internLang<-languages){
+             <tr>                 <td>@internLang.sno</td>
+
+                 <td>@internLang.known</td>
+                   <td>@internLang.fluency</td>
+                   <td><a href="">Edit</a></td>
+                  <td><a href="">Delete</a></td>
+             </tr>
+        }
+
+
+    </tbody>
+</table>
+
+<div id="languageModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Languages</h4>
+            </div>
+            <div class="modal-body">
+                @b3.form(routes.DashboardController.addLanguage) {
+                @b3.text(addLangForm("lang"), '_label -> "Language", '_help -> "Input  language name" )
+                @b3.text(addLangForm("fluency"), '_label -> "Fluency", '_help -> "" )
+                @b3.submit('class -> "btn btn-default"){ ADD }
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#languageModal">ADD</button>
+
+<!-- Modal -->

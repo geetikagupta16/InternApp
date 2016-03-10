@@ -1,5 +1,6 @@
 package repo
 
+import models.Award
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
@@ -22,6 +23,12 @@ class AwardRepoSpec extends Specification{
     val result = await(awardRepo.insert(1,"Codage","Programming contest","john@gmail.com"))
     result === 1
   }
+
+  "check for list of awards" in new WithApplication {
+    val result = await(awardRepo.getAll("john@gmail.com"))
+    result == List(Award(1,"IT Quiz","Quiz",1))
+  }
+
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
 

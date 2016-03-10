@@ -7,6 +7,7 @@ import slick.driver
 import slick.driver.JdbcProfile
 import scala.concurrent.Future
 import models.{Assignment}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import repo.InternRepo
 
@@ -25,16 +26,13 @@ class AssignmentRepo @Inject() (protected val dbConfigProvider: DatabaseConfigPr
     db.run(insertStatement)
   }
 
-  def getAll()={
-    db.run(assignmentTableQuery.to[List].result)
+  def getAll(email:String)={
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.flatMap(x=>db.run(assignmentTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
-/*
-  def getByInternId(email:String)={
 
-    db.run(internTableQuery.join(assignmentTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result)
 
-  }
-*/
 }
 
 trait AssignmentTable extends InternTable{ self: HasDatabaseConfigProvider[JdbcProfile] =>

@@ -1,16 +1,51 @@
 @import b3.vertical.fieldConstructor
 
-@(addAwardForm:Form[(Int,String,String)],addLangForm:Form[(String,String)],addProgForm:Form[(String,String)])(implicit message:Messages,flash:Flash)
 @main("Dashboard") {
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-    <li><a data-toggle="tab" href="#awards">Awards/Certificates</a></li>
-    <li><a data-toggle="tab" href="#lang">Languages</a></li>
-    <li><a data-toggle="tab" href="#assignment">Assignments</a></li>
-    <li><a data-toggle="tab" href="#proglang">Programming Languages</a></li>
+    <li><a data-toggle="tab" href="#awards" id="award">Awards/Certificates</a></li>
+    <li><a data-toggle="tab" href="#lang" id="language">Languages</a></li>
+    <li><a data-toggle="tab" href="#assignment" id="assignments">Assignments</a></li>
+    <li><a data-toggle="tab" href="#proglang" id="progLanguages">Programming Languages</a></li>
 <li><a data-toggle="tab" href="@routes.DashboardController.logout">Sign out</a></li>
 
 </ul>
+<script>
+$(document).ready(function(){
+$('#award').click(function(){
+
+$.get("/getawards",function(data,status){
+$('#awardmenu').html(data);
+});
+});
+
+$('#language').click(function(){
+$.get("/getlanguages",function(data,status){
+$('#languageMenu').html(data);
+
+});
+});
+
+$('#assignments').click(function(){
+$.get("/getassignments",function(data,status){
+$('#assignmentMenu').html(data);
+
+});
+});
+
+
+$('#progLanguages').click(function(){
+$.get("/getproglanguages",function(data,status){
+$('#progLangMenu').html(data);
+
+});
+});
+
+});
+
+</script>
+
+
 
 <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
@@ -18,204 +53,28 @@
         <p>Some content.</p>
     </div>
     <div id="awards" class="tab-pane fade">
-        <h3>Awards/Certificates</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Details</th>
-                <th></th>
+        <div id="awardmenu">
 
-                <th></th>
-
-            </tr>
-            </thead>
-            <tbody>
-
-  @*        @for(intern<-interns){
-        *    <tr><td>@intern.id</td>
-         *       <td>@intern.name</td>
-          *      <td>@intern.details</td>
-           *     <td><a href="">Edit</a></td>
-            *    <td><a href="">Delete</a></td>
-           * </tr>
-            }*@
-
-            </tbody>
-        </table>
-
-        <div id="awardModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add Awards/Certificates</h4>
-                    </div>
-                    <div class="modal-body">
-                        @b3.form(routes.DashboardController.addAward) {
-                        @b3.text(addAwardForm("id"), '_label -> "S.no" )
-                        @b3.text(addAwardForm("name"), '_label -> "Name", '_help -> "" )
-                        @b3.text(addAwardForm("details"), '_label -> "Details", '_help -> "" )
-
-                        @b3.submit('class -> "btn btn-default"){ ADD }
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
         </div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#awardModal">Add</button>
 
         <!-- Modal -->
 
     </div>
     <div id="lang" class="tab-pane fade">
-        <h3>Languages</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Languages Known</th>
-                <th>Fluency</th>
-                <th></th>
+<div id="languageMenu">
 
-                <th></th>
-
-            </tr>
-            </thead>
-            <tbody>
-@*
-  *          @for(internLang<-languages){
-   *         <tr><td>@internLang.lang</td>
-    *            <td>@internLang.level</td>
-     *           <td><a href="">Edit</a></td>
-      *          <td><a href="">Delete</a></td>
-       *     </tr>
-     *       }
-*@
-
-           </tbody>
-        </table>
-
-        <div id="languageModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add Languages</h4>
-                    </div>
-                    <div class="modal-body">
-                        @b3.form(routes.DashboardController.addLanguage) {
-                        @b3.text(addLangForm("lang"), '_label -> "Language", '_help -> "Input  language name" )
-                        @b3.text(addLangForm("fluency"), '_label -> "Fluency", '_help -> "" )
-                        @b3.submit('class -> "btn btn-default"){ ADD }
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#languageModal">ADD</button>
-
-        <!-- Modal -->
-
+</div>
     </div>
 
     <div id="assignment" class="tab-pane fade">
-        <h3>Assignments</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Marks</th>
-                <th>Remarks</th>
+<div id="assignmentMenu">
 
-
-            </tr>
-            </thead>
-            <tbody>
-
-       @*     @for(asg<-internAssignment){
-         *   <tr><td>@asg.sno</td>
-          *      <td>@asg.name</td>
-           *     <td>@asg.marks</td>
-            *    <td>@asg.remarks</td>
-*
- *           </tr>
-  *          }
-*@
-            </tbody>
-        </table>
-
+</div>
     </div>
 
     <div id="proglang" class="tab-pane fade">
-        <h3>Programming Languages</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>S.no</th>
-                <th>Name</th>
-                <th>Level</th>
-                <th></th>
+<div id="progLangMenu">
 
-                <th></th>
-
-            </tr>
-            </thead>
-            <tbody>
-@*
-  *          @for(plang<-progLang){
-   *         <tr><td>@plang.sno</td>
-    *            <td>@plang.name</td>
-     *           <td>@plang.level</td>
-      *          <td><a href="">Edit</a></td>
-       *         <td><a href="">Delete</a></td>
-*
- *           </tr>
-  *          }
-*@
-            </tbody>
-        </table>
-        <div id="progLangModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add Programming Languages</h4>
-                    </div>
-                    <div class="modal-body">
-                        @b3.form(routes.DashboardController.addProgLanguage) {
-                        @b3.text(addProgForm("langName"), '_label -> "Language", '_help -> "Input  language name" )
-                        @b3.text(addProgForm("fluency"), '_label -> "Level", '_help -> "" )
-                        @b3.submit('class -> "btn btn-default"){ ADD }
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#progLangModal">Add</button>
-
-        <!-- Modal -->
-
-    </div>
-
+</div>
 </div>
 }

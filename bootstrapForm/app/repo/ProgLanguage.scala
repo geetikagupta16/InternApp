@@ -27,16 +27,11 @@ class ProgLanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfig
     res.flatMap(x=>db.run(progLangTableQuery+=ProgLanguage(sno,known,fluency,x.head.id)))
   }
 
-  def getAll()={
-    db.run(progLangTableQuery.to[List].result)
+  def getAll(email:String)={
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.flatMap(x=>db.run(progLangTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
-/*
-  def getByInternId(email:String)={
-
-    db.run(internTableQuery.join(progLangTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result)
-
-  }
-*/
 
 }
 

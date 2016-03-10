@@ -1,6 +1,7 @@
 package repo
 
 
+import models.ProgLanguage
 import org.specs2.mutable.Specification
 import play.api.Application
 import play.api.test.WithApplication
@@ -20,6 +21,12 @@ class ProgLanguageRepoSpec extends Specification{
     val result = await(proglangRepo.insert(1,"JAVA","Good","john@gmail.com"))
     result === 1
   }
+
+  "check for list of programming languages" in new WithApplication {
+    val result = await(proglangRepo.getAll("john@gmail.com"))
+    result == List(ProgLanguage(1,"java","bad",1))
+  }
+
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
 
 

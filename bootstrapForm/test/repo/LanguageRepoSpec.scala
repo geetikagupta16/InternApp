@@ -23,7 +23,7 @@ class LanguageRepoSpec extends Specification{
 
   "check for list of languages" in new WithApplication {
     val result = await(langRepo.getAll("john@gmail.com"))
-    result == List(Language(1,"java","bad",1))
+    result == List(Language(1,"french","bad",1))
   }
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)

@@ -1,0 +1,30 @@
+@import b3.vertical.fieldConstructor
+
+@(x:List[Assignment])(implicit message:Messages,flash:Flash)
+<h3>Assignments</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Marks</th>
+        <th>Remarks</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+
+         @for(asg<-x){
+         <tr><td>@asg.sno</td>
+              <td>@asg.name</td>
+             <td>@asg.date</td>
+
+             <td>@asg.marks</td>
+            <td>@asg.remarks</td>
+
+                   </tr>
+              }
+
+    </tbody>
+</table>

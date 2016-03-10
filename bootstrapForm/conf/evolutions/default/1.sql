@@ -4,6 +4,8 @@ INSERT INTO "intern" values (1,'john', 'john@gmail.com','abcdef');
 
 INSERT INTO "intern" values (2,'admin', 'admin@gmail.com','admin');
 
+CREATE TABLE "assignment"("sno" SERIAL, "name" varchar(200),"date" varchar(200),"marks" int,"remarks" varchar(200),"internid" int not null,PRIMARY KEY(sno,internid),FOREIGN KEY(internid) references intern(id));
+
 
 CREATE TABLE "language"("sno" SERIAL, "known" varchar(200),"fluency" varchar(200),"internid" int not null,PRIMARY KEY(sno,internid),FOREIGN KEY(internid) references intern(id));
 
@@ -12,11 +14,13 @@ CREATE TABLE "award"("id" SERIAL, "name" varchar(200),"details" varchar(200),"in
 CREATE TABLE "proglanguage"("sno" SERIAL, "known" varchar(200),"fluency" varchar(200),"internid" int not null,PRIMARY KEY(sno,internid),FOREIGN KEY(internid) references intern(id));
 
 INSERT INTO "language" values(1,'french','bad',1);
-INSERT INTO "language" values(2,'spanish','good',1);
 
 INSERT INTO "award" values(1,'IT Quiz','Quiz',1);
 
 INSERT INTO "proglanguage" values(1,'java','bad',1);
+
+INSERT INTO "assignment" values(1,'Play assignment','5-03-2016','6','average',1);
+
 
 
 
@@ -31,3 +35,5 @@ DROP TABLE "award";
 DROP TABLE "proglanguage";
 
 DROP TABLE "language";
+
+DROP TABLE "assignment";

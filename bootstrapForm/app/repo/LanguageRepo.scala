@@ -26,11 +26,6 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     res.flatMap(x=>db.run(languageTableQuery+=Language(sno,known,fluency,x.head.id)))
   }
 
-  def getAll()={
-
-    db.run{languageTableQuery.to[List].result}
-
-  }
 
   def getAll(email:String)={
     val getList=internTableQuery.filter(_.email===email).to[List].result
@@ -38,12 +33,6 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     res.flatMap(x=>db.run(languageTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
 
-/*  def getByInternId(email:String)={
-
-    db.run{internTableQuery.join(languageTableQuery).on(_.id===_.internId).filter(x=>x._1.email===email).to[List].result}
-
-  }
-*/
 
 }
 

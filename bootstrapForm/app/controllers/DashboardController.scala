@@ -1,13 +1,13 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{Language, Login, Intern}
+import models.{Award, Language, Login, Intern}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
-import repo.{AwardRepo, ProgLanguageRepo, LanguageRepo, InternRepo}
+import repo._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
@@ -15,7 +15,7 @@ import scala.concurrent.Future
 /**
   * Created by knoldus on 8/3/16.
   */
-class DashboardController @Inject()(internRepo: InternRepo)(langRepo: LanguageRepo)(progLangRepo: ProgLanguageRepo)(awardRepo: AwardRepo) extends Controller {
+class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: InternRepo)(langRepo: LanguageRepo)(progLangRepo: ProgLanguageRepo)(awardRepo: AwardRepo) extends Controller {
 
   val addAwardForm = Form(
     tuple(
@@ -24,6 +24,7 @@ class DashboardController @Inject()(internRepo: InternRepo)(langRepo: LanguageRe
       "details" -> nonEmptyText
     )
   )
+
 
   val addLangForm = Form(
     tuple(
@@ -41,23 +42,8 @@ class DashboardController @Inject()(internRepo: InternRepo)(langRepo: LanguageRe
 
 
   def getDashboard() = Action{ implicit request =>
-  /*  request.session.get("email").map { user => {
-      val res = langRepo.getByInternId(user)
-      var lang
-      res.map(x => {
-        //lang = x.head._2
-        Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm))
 
-      })
-      res
-
-    }
-    }.getOrElse {
-      Future {
-        Unauthorized("Please sign in to see this page...!!!!")
-      }
-    }
-*/    Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm))
+    Ok(views.html.dashboard())
 
   }
 
@@ -71,14 +57,6 @@ class DashboardController @Inject()(internRepo: InternRepo)(langRepo: LanguageRe
 
     Redirect(routes.LoginController.getForm).withNewSession
   }
-
-  def languageDetails() = Action.async({ implicit request =>
-
-    val futurelang: Future[List[Language]] = langRepo.getAll()
-
-    val res = futurelang.map(x => Ok(views.html.dashboard(addAwardForm, addLangForm, addProgLangForm)))
-    res
-  })
 
   def addLanguage() = Action.async({ implicit request =>
     addLangForm.bindFromRequest.fold(
@@ -121,10 +99,85 @@ class DashboardController @Inject()(internRepo: InternRepo)(langRepo: LanguageRe
   })
 
 
-  def addProgLanguage() = Action { implicit request =>
-    Ok("In Prog Lang")
+  def addProgLanguage() = Action.async({ implicit request =>
+
+    addProgLangForm.bindFromRequest.fold(
+      formError => Future {
+        BadRequest("ERROR")
+      },
+      progData => {
+        request.session.get("email").map { user => {
+          val res = progLangRepo.insert(1, progData._1, progData._2, user)
+          res.map(x => Redirect(routes.DashboardController.getDashboard))
+        }
+        }.getOrElse {
+          Future {
+            Unauthorized("Please sign in to see this page...!!!!")
+          }
+        }
+
+      })
+  })
+
+  def getAwards()=Action.async({ implicit request =>
+    request.session.get("email").map { user => {
+      val res = awardRepo.getAll(user)
+      res.map(x => Ok(views.html.award(x, addAwardForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
+  })
+
+    def getLanguages()=Action.async({implicit request=>
+      request.session.get("email").map { user => {
+        val res = langRepo.getAll(user)
+        res.map(x => Ok(views.html.language(x,addLangForm)))
+      }
+      }.getOrElse {
+        Future {
+          Unauthorized("Please sign in to see this page...!!!!")
+        }
+
+      }
+
+
+})
+
+
+  def getAssignments()=Action.async({ implicit request =>
+    request.session.get("email").map { user => {
+      val res = assignmentRepo.getAll(user)
+      res.map(x => Ok(views.html.assignment(x)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
 
   }
+  )
+/*
+  def getProgLanguages()=Action.async({implicit request=>
+    request.session.get("email").map { user => {
+      val res = progLangRepo.getAll(user)
+      res.map(x => Ok(views.html.programmingLanguage(x,addProgLangForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
 
 
+  })*/
+
+  def getProgLanguages()=Action{Ok("In Prog Lang")}
 }
+

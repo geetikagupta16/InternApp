@@ -17,7 +17,6 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4-1206-jdbc4",
   "com.adrianhurt" %% "play-bootstrap" % "1.0-P24-B3-SNAPSHOT",
   "ch.qos.logback"       %     "logback-classic"          %      "1.1.3",
-  "org.scalatest"        %%    "scalatest"    	      %      "2.2.5"     %    "test",
   "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1",
   "com.typesafe.slick" %% "slick-hikaricp" % "3.1.1",
   "com.typesafe.slick"   %%    "slick"            	      %      "3.1.1"

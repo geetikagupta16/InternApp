@@ -26,3 +26,11 @@ GET     /getForm                            controllers.LoginController.getForm
 POST    /auth                               controllers.LoginController.auth
 
 GET     /logout                          controllers.DashboardController.logout
+
+GET     /getawards                       controllers.DashboardController.getAwards
+
+GET     /getlanguages                       controllers.DashboardController.getLanguages
+
+GET     /getassignments                       controllers.DashboardController.getAssignments
+
+GET     /getproglanguages                       controllers.DashboardController.getProgLanguages
