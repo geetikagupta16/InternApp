@@ -19,6 +19,7 @@ import scala.concurrent.duration._
   * You can mock out a whole application including requests, plugins etc.
   * For more information, consult the wiki.
   */
+
 @RunWith(classOf[JUnitRunner])
 class LoginControllerSpec extends Specification {
 
@@ -38,13 +39,20 @@ class LoginControllerSpec extends Specification {
       redirectLocation(res) must beSome("/dashboard")
     }
 
+    "CHECK FOR ADMIN LOGIN" in new WithApplication {
+      val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
+      ("email" -> "admin@gmail.com", "password" -> "admin")).get
+      val result = Await.result(res, 2 seconds)
+      redirectLocation(res) must beSome("/adminDashboard")
+    }
+
 
 
     "CHECK FOR unsucessfull LOGIN" in new WithApplication {
       val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
       ("email" -> "jon@gmail.com", "password" -> "abcdef")).get
       val result = Await.result(res, 2 seconds)
-      redirectLocation(res) must not beSome("/dashboard")
+      redirectLocation(res) must not beSome("/getForm")
     }
   }
 }

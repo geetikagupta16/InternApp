@@ -44,9 +44,9 @@ trait ProgLanguageTable extends InternTable {self: HasDatabaseConfigProvider[Jdb
 
   import driver.api._
 
-  val progLangTableQuery = TableQuery[LanguageTable]
+  val progLangTableQuery = TableQuery[ProgLanguageTable]
 
-  class LanguageTable(tag: Tag) extends Table[ProgLanguage](tag, "proglanguage") {
+  class ProgLanguageTable(tag: Tag) extends Table[ProgLanguage](tag, "proglanguage") {
 
 
     def * = (sno,known,fluency,id) <>(ProgLanguage.tupled, ProgLanguage.unapply)

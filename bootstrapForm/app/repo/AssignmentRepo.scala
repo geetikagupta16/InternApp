@@ -6,8 +6,6 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.driver
 import slick.driver.JdbcProfile
 import scala.concurrent.Future
-
-import repo.ColumnTypeMapper
 import models.{Assignment}
 
 import repo.InternRepo

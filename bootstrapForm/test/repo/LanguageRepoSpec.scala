@@ -1,5 +1,7 @@
 package repo
 
+import models.Language
+
 import scala.concurrent.{Await, Future}
 import org.specs2.mutable.Specification
 import play.api.Application
@@ -17,6 +19,11 @@ class LanguageRepoSpec extends Specification{
   "Language form add" in new WithApplication {
     val result = await(langRepo.insert(1,"English","Good","john@gmail.com"))
     result === 1
+  }
+
+  "check for list of languages" in new WithApplication {
+    val result = await(langRepo.getAll("john@gmail.com"))
+    result == List(Language(1,"java","bad",1))
   }
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
