@@ -1,0 +1,28 @@
+@(internList:List[Intern])
+<h3>Intern Details</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th></th>
+
+        <th></th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+            @for(intern<-internList){
+        <tr><td>@intern.id</td>
+               <td>@intern.name</td>
+              <td>@intern.email</td>
+             <td><a href="">Edit</a></td>
+            <td><a href="">Delete</a></td>
+         </tr>
+    }
+
+    </tbody>
+</table>
+</div>

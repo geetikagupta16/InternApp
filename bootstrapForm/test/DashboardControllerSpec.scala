@@ -13,13 +13,12 @@ class DashboardControllerSpec extends Specification {
     }
 
 
-
     " rendering of get Award form render" in new WithApplication {
       val res = route(FakeRequest(GET, "/getlanguages").withSession("email"->"john@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
 
-    " rendering of get Award form render" in new WithApplication {
+    " rendering of get Assignment form render" in new WithApplication {
       val res = route(FakeRequest(GET, "/getAssignment").withSession("email"->"john@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }

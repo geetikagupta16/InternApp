@@ -49,7 +49,7 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
 
   def getAdminDashboard() = Action {
     implicit request =>
-      Ok(views.html.adminDashboard(addAwardForm, addLangForm, addProgLangForm))
+      Ok(views.html.adminDashboard())
 
   }
 
@@ -174,6 +174,14 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
 
 
   })
+
+  def getAllInterns()=Action.async({implicit request=>
+    val listintern=internRepo.getAll()
+    listintern.map(x=>Ok(views.html.interns(x)))
+
+
+  })
+
 
   def getLanguages() = Action.async({ implicit request =>
     request.session.get("email").map { user => {

@@ -19,7 +19,12 @@ libraryDependencies ++= Seq(
   "ch.qos.logback"       %     "logback-classic"          %      "1.1.3",
   "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1",
   "com.typesafe.slick" %% "slick-hikaricp" % "3.1.1",
-  "com.typesafe.slick"   %%    "slick"            	      %      "3.1.1"
+  "com.typesafe.slick"   %%    "slick"            	      %      "3.1.1",
+  "org.seleniumhq.selenium" % "selenium-server" % "2.52.0",
+  "org.seleniumhq.selenium" % "selenium-firefox-driver" % "2.52.0",
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+  "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
+  "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
 
 )
 

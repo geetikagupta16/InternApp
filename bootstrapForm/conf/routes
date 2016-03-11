@@ -44,3 +44,6 @@ GET     /getAllLanguages                       controllers.DashboardController.g
 GET     /getAllProgLanguages                       controllers.DashboardController.getAllProgLanguages
 
 GET     /getAllAssignments                       controllers.DashboardController.getAllAssignments
+
+GET     /getAllInterns                       controllers.DashboardController.getAllInterns
+

@@ -25,7 +25,6 @@ class InternRepoSpec extends Specification {
   "check for list of all Interns" in new WithApplication {
     val result = await(internRepo.getAll())
     result == List(Intern(1,"john", "john@gmail.com","abcdef"),Intern(2,"admin","admin@gmail.com","admin"))
-
   }
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
