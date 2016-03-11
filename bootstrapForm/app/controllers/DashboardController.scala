@@ -162,7 +162,7 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
 
   }
   )
-/*
+
   def getProgLanguages()=Action.async({implicit request=>
     request.session.get("email").map { user => {
       val res = progLangRepo.getAll(user)
@@ -176,8 +176,7 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
     }
 
 
-  })*/
+  })
 
-  def getProgLanguages()=Action{Ok("In Prog Lang")}
 }
 

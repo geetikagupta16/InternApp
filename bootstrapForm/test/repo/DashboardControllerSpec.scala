@@ -9,7 +9,6 @@ import play.api.test._
 import play.api.test.Helpers._
 
 import scala.concurrent.Await
-import org.scalatest  .time._
 import scala.concurrent.duration._
 
 class DashboardControllerSpec extends Specification {

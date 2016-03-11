@@ -44,7 +44,7 @@ trait ProgLanguageTable extends InternTable {self: HasDatabaseConfigProvider[Jdb
   class ProgLanguageTable(tag: Tag) extends Table[ProgLanguage](tag, "proglanguage") {
 
 
-    def * = (sno,known,fluency,id) <>(ProgLanguage.tupled, ProgLanguage.unapply)
+    def * = (sno,known,fluency,internId) <>(ProgLanguage.tupled, ProgLanguage.unapply)
 
     def sno= column[Int]("sno",O.AutoInc)
 
@@ -52,11 +52,11 @@ trait ProgLanguageTable extends InternTable {self: HasDatabaseConfigProvider[Jdb
 
     def fluency = column[String]("fluency", O.SqlType("VARCHAR(200"))
 
-    def id=column[Int]("internid")
+    def internId=column[Int]("internid")
 
-    def languagePk = primaryKey("language_pk", (sno, id))
+    def languagePk = primaryKey("language_pk", (sno, internId))
 
-    def internId = foreignKey("internId_fk", id,internTableQuery)(_.id)
+    def id = foreignKey("internId_fk",internId,internTableQuery)(_.id)
 
 
   }

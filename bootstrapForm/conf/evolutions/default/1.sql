@@ -14,16 +14,17 @@ CREATE TABLE "award"("id" SERIAL, "name" varchar(200),"details" varchar(200),"in
 CREATE TABLE "proglanguage"("sno" SERIAL, "known" varchar(200),"fluency" varchar(200),"internid" int not null,PRIMARY KEY(sno,internid),FOREIGN KEY(internid) references intern(id));
 
 INSERT INTO "language" values(1,'french','bad',1);
+INSERT INTO "language" values(2,'Spanish','good',1);
+
 
 INSERT INTO "award" values(1,'IT Quiz','Quiz',1);
+INSERT INTO "award" values(2,'IT tambola','tambola',1);
 
-INSERT INTO "proglanguage" values(1,'java','bad',1);
-
-INSERT INTO "assignment" values(1,'Play assignment','5-03-2016','6','average',1);
-
+INSERT INTO "proglanguage" values(1,'HTML','good',1);
 
 
-
+INSERT INTO "assignment" values(1,'Play assignment','2016-03-03','6','average',1);
+INSERT INTO "assignment" values(2,'Jquery assignment','2016-01-02','7','good',1);
 
 
 # --- !Downs

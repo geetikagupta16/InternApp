@@ -15,15 +15,15 @@ import scala.concurrent.{Await, Future}
 
 class ProgLanguageRepoSpec extends Specification{
 
-  def proglangRepo(implicit app: Application) = Application.instanceCache[ProgLanguageRepo].apply(app)
+  def progLangRepo(implicit app: Application) = Application.instanceCache[ProgLanguageRepo].apply(app)
 
   " Progamming Language form add" in new WithApplication {
-    val result = await(proglangRepo.insert(1,"JAVA","Good","john@gmail.com"))
+    val result = await(progLangRepo.insert(1,"JAVA","Good","john@gmail.com"))
     result === 1
   }
 
   "check for list of programming languages" in new WithApplication {
-    val result = await(proglangRepo.getAll("john@gmail.com"))
+    val result = await(progLangRepo.getAll("john@gmail.com"))
     result == List(ProgLanguage(1,"java","bad",1))
   }
 
