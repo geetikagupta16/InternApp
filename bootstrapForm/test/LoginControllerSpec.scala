@@ -40,8 +40,6 @@ class LoginControllerSpec extends Specification {
       redirectLocation(res) must beSome("/adminDashboard")
     }
 
-
-
     "CHECK FOR unsucessfull LOGIN" in new WithApplication {
       val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
       ("email" -> "jon@gmail.com", "password" -> "abcdef")).get

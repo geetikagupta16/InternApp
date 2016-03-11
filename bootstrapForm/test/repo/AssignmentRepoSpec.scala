@@ -19,6 +19,12 @@ class AssignmentRepoSpec extends Specification{
     result == List(Assignment(1,"Play assignment","2016-03-03",6,"average",1),Assignment(2,"Jquery assignment","2016-01-02",7,"good",1))
   }
 
+  "Assignment form add" in new WithApplication {
+    val result = await(assignmentRepo.insert(1,"Scala Assignment","2016-02-06",7,"Good","admin@gmail.com"))
+    result === 1
+  }
+
+
   "check for list of all assignments" in new WithApplication {
     val result = await(assignmentRepo.getAll())
     result == List(Assignment(1,"Play assignment","2016-03-03",6,"average",1),Assignment(2,"Jquery assignment","2016-01-02",7,"good",1))

@@ -26,7 +26,7 @@ class LoginControllerTest extends FlatSpec {
     driver.findElementById("award").click()
     driver.findElementById("language").click()
     driver.findElementById("assignments").click()
-    driver.
+
   }
 
 

@@ -34,26 +34,29 @@ class DashboardControllerSpec extends Specification {
       contentType(res) must beSome.which(_ == "text/html")
     }
 
-    " rendering of get Assignment" in new WithApplication {
+    " rendering of get Assignment for ADMIN" in new WithApplication {
       val res = route(FakeRequest(GET, " /getAllAssignments ").withSession("email"->"admin@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
 
-    " rendering of get Programming language" in new WithApplication {
+    " rendering of get Awards for admin" in new WithApplication {
+      val res = route(FakeRequest(GET, " /getAllAwards ").withSession("email"->"admin@gmail.com")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+
+    " rendering of get Programming language for Admin" in new WithApplication {
       val res = route(FakeRequest(GET, "/getAllProgLanguages  ").withSession("email"->"admin@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
-    " rendering of all interns" in new WithApplication {
+    " rendering of all interns for Admin" in new WithApplication {
       val res = route(FakeRequest(GET, "/getAllInterns").withSession("email"->"admin@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
 
-    " rendering of get all languages" in new WithApplication {
+    " rendering of get all languages for admin" in new WithApplication {
       val res = route(FakeRequest(GET, "/getAllLanguages  ").withSession("email"->"admin@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
   }
-
-
 
 }
