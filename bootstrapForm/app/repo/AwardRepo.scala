@@ -27,6 +27,13 @@ class AwardRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
     res.flatMap(x=>db.run(awardTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
 
+  def getAll()={
+
+    db.run{awardTableQuery.to[List].result}
+  }
+
+
+
 }
 
 

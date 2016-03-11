@@ -24,6 +24,10 @@ class InternRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
     db.run(find)
   }
 
+  def getAll()={
+    db.run(internTableQuery.to[List].result)
+  }
+
 
 }
 

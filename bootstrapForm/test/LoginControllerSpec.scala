@@ -1,16 +1,11 @@
-package repo
-
+import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
-import org.junit.runner._
-import play.api.Application
-import play.api.test.WithApplication
-import play.api.test._
 import play.api.test.Helpers._
+import play.api.test.{WithApplication, _}
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
-
 
 
 /**

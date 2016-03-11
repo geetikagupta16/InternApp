@@ -15,7 +15,7 @@ import scala.concurrent.Future
 /**
   * Created by knoldus on 8/3/16.
   */
-class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: InternRepo)(langRepo: LanguageRepo)(progLangRepo: ProgLanguageRepo)(awardRepo: AwardRepo) extends Controller {
+class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: InternRepo)(langRepo: LanguageRepo)(progLangRepo: ProgLanguageRepo)(awardRepo: AwardRepo) extends Controller {
 
   val addAwardForm = Form(
     tuple(
@@ -41,7 +41,7 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
   )
 
 
-  def getDashboard() = Action{ implicit request =>
+  def getDashboard() = Action { implicit request =>
 
     Ok(views.html.dashboard())
 
@@ -53,8 +53,7 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
 
   }
 
-  def logout = Action { implicit request =>
-
+  def logout() = Action { implicit request =>
     Redirect(routes.LoginController.getForm).withNewSession
   }
 
@@ -70,14 +69,30 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
         }
         }.getOrElse {
           Future {
-            Unauthorized("Please sign in to see this page...!!!!")
+            Unauthorized("sign in to see this page...!!!!")
           }
         }
 
       })
   })
 
-  //def addAward()=Action{Ok("In award")}
+  def editAward(awardId: Int) = Action.async({ implicit request =>
+    request.session.get("email").map { user => {
+      val awardList = awardRepo.getAll(user)
+      val res = awardList.map(x => x.filter(_.id == awardId))
+      res.map(award => {
+        addAwardForm.fill((award.head.id, award.head.name, award.head.details))
+        Ok(views.html.awardModal(addAwardForm))
+
+      })
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+    }
+  })
+
 
   def addAward() = Action.async({ implicit request =>
     addAwardForm.bindFromRequest.fold(
@@ -119,10 +134,10 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
       })
   })
 
-  def getAwards()=Action.async({ implicit request =>
+  def getAwards() = Action.async({ implicit request =>
     request.session.get("email").map { user => {
       val res = awardRepo.getAll(user)
-      res.map(x => Ok(views.html.award(x, addAwardForm)))
+      res.map(x => Ok(views.html.award(x,addAwardForm)))
     }
     }.getOrElse {
       Future {
@@ -132,23 +147,51 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
     }
   })
 
-    def getLanguages()=Action.async({implicit request=>
-      request.session.get("email").map { user => {
-        val res = langRepo.getAll(user)
-        res.map(x => Ok(views.html.language(x,addLangForm)))
+  def getAllAwards()=Action.async({implicit request=>
+  val listaward=awardRepo.getAll()
+    listaward.map(x=>Ok(views.html.award(x,addAwardForm)))
+
+
+  })
+
+  def getAllLanguages()=Action.async({implicit request=>
+    val listlanguage=langRepo.getAll()
+    listlanguage.map(x=>Ok(views.html.language(x,addLangForm)))
+
+
+  })
+
+  def getAllProgLanguages()=Action.async({implicit request=>
+    val listprog=progLangRepo.getAll()
+    listprog.map(x=>Ok(views.html.programmingLanguage(x,addProgLangForm)))
+
+
+  })
+
+  def getAllAssignments()=Action.async({implicit request=>
+    val listassignment=assignmentRepo.getAll()
+    listassignment.map(x=>Ok(views.html.assignment(x)))
+
+
+  })
+
+  def getLanguages() = Action.async({ implicit request =>
+    request.session.get("email").map { user => {
+      val res = langRepo.getAll(user)
+      res.map(x => Ok(views.html.language(x, addLangForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
       }
-      }.getOrElse {
-        Future {
-          Unauthorized("Please sign in to see this page...!!!!")
-        }
 
-      }
+    }
 
 
-})
+  })
 
 
-  def getAssignments()=Action.async({ implicit request =>
+  def getAssignments() = Action.async({ implicit request =>
     request.session.get("email").map { user => {
       val res = assignmentRepo.getAll(user)
       res.map(x => Ok(views.html.assignment(x)))
@@ -163,10 +206,10 @@ class DashboardController @Inject()(assignmentRepo:AssignmentRepo)(internRepo: I
   }
   )
 
-  def getProgLanguages()=Action.async({implicit request=>
+  def getProgLanguages() = Action.async({ implicit request =>
     request.session.get("email").map { user => {
       val res = progLangRepo.getAll(user)
-      res.map(x => Ok(views.html.programmingLanguage(x,addProgLangForm)))
+      res.map(x => Ok(views.html.programmingLanguage(x, addProgLangForm)))
     }
     }.getOrElse {
       Future {

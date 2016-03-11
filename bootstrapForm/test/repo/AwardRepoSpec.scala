@@ -29,6 +29,11 @@ class AwardRepoSpec extends Specification{
     result == List(Award(1,"IT Quiz","Quiz",1))
   }
 
+  "check for list of all awards" in new WithApplication {
+    val result = await(awardRepo.getAll())
+    result == List(Award(1,"IT Quiz","Quiz",1),Award(2,"IT tambola","tambola",1))
+  }
+
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
 

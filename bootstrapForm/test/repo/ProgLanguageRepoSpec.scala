@@ -27,6 +27,13 @@ class ProgLanguageRepoSpec extends Specification{
     result == List(ProgLanguage(1,"java","bad",1))
   }
 
+  "check for list of all programming languages" in new WithApplication {
+    val result = await(progLangRepo.getAll())
+    result == List(ProgLanguage(1,"java","bad",1))
+  }
+
+
+
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
 
 

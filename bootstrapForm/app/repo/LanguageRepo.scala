@@ -33,6 +33,10 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     res.flatMap(x=>db.run(languageTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
 
+  def getAll()={
+    db.run(languageTableQuery.to[List].result)
+  }
+
 
 }
 

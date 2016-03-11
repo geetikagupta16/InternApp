@@ -33,6 +33,10 @@ class ProgLanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfig
     res.flatMap(x=>db.run(progLangTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
 
+  def getAll()={
+    db.run(progLangTableQuery.to[List].result)
+  }
+
 }
 
 trait ProgLanguageTable extends InternTable {self: HasDatabaseConfigProvider[JdbcProfile] =>

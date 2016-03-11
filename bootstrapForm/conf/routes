@@ -34,3 +34,13 @@ GET     /getlanguages                       controllers.DashboardController.getL
 GET     /getassignments                       controllers.DashboardController.getAssignments
 
 GET     /getproglanguages                       controllers.DashboardController.getProgLanguages
+
+GET     /editAward/:awardId                              controllers.DashboardController.editAward(awardId:Int)
+
+GET     /getAllAwards                       controllers.DashboardController.getAllAwards
+
+GET     /getAllLanguages                       controllers.DashboardController.getAllLanguages
+
+GET     /getAllProgLanguages                       controllers.DashboardController.getAllProgLanguages
+
+GET     /getAllAssignments                       controllers.DashboardController.getAllAssignments

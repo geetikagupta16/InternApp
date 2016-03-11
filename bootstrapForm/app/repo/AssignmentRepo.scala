@@ -32,6 +32,10 @@ class AssignmentRepo @Inject() (protected val dbConfigProvider: DatabaseConfigPr
     res.flatMap(x=>db.run(assignmentTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
 
+  def getAll()={
+    db.run(assignmentTableQuery.to[List].result)
+  }
+
 
 }
 

@@ -16,17 +16,44 @@
         </thead>
         <tbody>
 
-             @for(intern<-x){
-            <tr><td>@intern.id</td>
-                   <td>@intern.name</td>
-                  <td>@intern.details</td>
-                 <td><a href="">Edit</a></td>
-                <td><a href="">Delete</a></td>
+             @for(award<-x){
+            <tr><td id="awardId">@award.id</td>
+                   <td>@award.name</td>
+                  <td>@award.details</td>
+                <td>@award.internId</td>
+
+                <td><a href="#" id="editAward">Edit</a></td>
+                <td><a href="#">Delete</a></td>
              </tr>
         }
 
         </tbody>
     </table>
+
+<script type="text/javascript">
+event.preventDefault();
+$(document).ready(function(){
+
+alert("In ready");
+$('#editAward').onclick(function(){
+alert("In award");
+$.get("/editAward?id="+$(#awardId),function(data,status){
+
+
+});
+});
+
+
+
+$('#awardAdd').click(function(){
+
+$.post("/addAward",function(data,status){
+
+});
+});
+});
+
+</script>
 
     <div id="awardModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -43,7 +70,7 @@
                     @b3.text(addAwardForm("name"), '_label -> "Name", '_help -> "" )
                     @b3.text(addAwardForm("details"), '_label -> "Details", '_help -> "" )
 
-                    @b3.submit('class -> "btn btn-default"){ ADD }
+                    @b3.submit('class -> "btn btn-default" ,'id->"awardAdd"){ ADD }
                     }
                 </div>
                 <div class="modal-footer">

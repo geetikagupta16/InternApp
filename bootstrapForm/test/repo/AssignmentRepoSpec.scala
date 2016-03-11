@@ -19,6 +19,13 @@ class AssignmentRepoSpec extends Specification{
     result == List(Assignment(1,"Play assignment","2016-03-03",6,"average",1),Assignment(2,"Jquery assignment","2016-01-02",7,"good",1))
   }
 
+  "check for list of all assignments" in new WithApplication {
+    val result = await(assignmentRepo.getAll())
+    result == List(Assignment(1,"Play assignment","2016-03-03",6,"average",1),Assignment(2,"Jquery assignment","2016-01-02",7,"good",1))
+  }
+
+
+
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
 }
