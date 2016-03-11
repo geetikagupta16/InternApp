@@ -9,7 +9,6 @@ import scala.concurrent.Future
 import models.{Assignment}
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import repo.InternRepo
 
 
 /**

@@ -176,36 +176,82 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
   })
 
   def getAllAwards()=Action.async({implicit request=>
-  val listaward=awardRepo.getAll()
-    listaward.map(x=>Ok(views.html.award(x,addAwardForm)))
+    request.session.get("email").map { user => {
+      val listaward=awardRepo.getAll()
+      listaward.map(x=>Ok(views.html.award(x,addAwardForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
 
 
   })
 
   def getAllLanguages()=Action.async({implicit request=>
-    val listlanguage=langRepo.getAll()
-    listlanguage.map(x=>Ok(views.html.language(x,addLangForm)))
+    request.session.get("email").map { user => {
+      val listlanguage=langRepo.getAll()
+      listlanguage.map(x=>Ok(views.html.language(x,addLangForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
+
 
 
   })
 
   def getAllProgLanguages()=Action.async({implicit request=>
-    val listprog=progLangRepo.getAll()
-    listprog.map(x=>Ok(views.html.programmingLanguage(x,addProgLangForm)))
+    request.session.get("email").map { user => {
+      val listprog=progLangRepo.getAll()
+      listprog.map(x=>Ok(views.html.programmingLanguage(x,addProgLangForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
+
+
 
 
   })
 
   def getAllAssignments()=Action.async({implicit request=>
-    val listassignment=assignmentRepo.getAll()
-    listassignment.map(x=>Ok(views.html.adminAssignment(x,addAssignmentForm)))
+    request.session.get("email").map { user => {
+      val listAssignment=assignmentRepo.getAll()
+      listAssignment.map(x=>Ok(views.html.adminAssignment(x,addAssignmentForm)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
+
 
 
   })
 
   def getAllInterns()=Action.async({implicit request=>
-    val listassignment=internRepo.getAll()
-    listassignment.map(x=>Ok(views.html.interns(x)))
+    request.session.get("email").map { user => {
+      val listIntern=internRepo.getAll()
+      listIntern.map(x=>Ok(views.html.interns(x)))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+
+    }
+
+
 
 
   })

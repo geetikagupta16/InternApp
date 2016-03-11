@@ -44,7 +44,9 @@ class LoginControllerSpec extends Specification {
       val res = route(FakeRequest(POST, "/auth").withFormUrlEncodedBody
       ("email" -> "jon@gmail.com", "password" -> "abcdef")).get
       val result = Await.result(res, 2 seconds)
-      redirectLocation(res) must not beSome("/getForm")
+      status(res) must equalTo(SEE_OTHER)
+      contentAsString(res) must contain("Email or password is incorrect")
+
     }
   }
 }

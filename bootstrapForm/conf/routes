@@ -19,7 +19,7 @@ POST     /addLanguage                           controllers.DashboardController.
 
 POST     /addProgLanguage                       controllers.DashboardController.addProgLanguage
 
-GET        /adminDashboard                      controllers.DashboardController.getAdminDashboard
+GET      /adminDashboard                      controllers.DashboardController.getAdminDashboard
 
 GET     /getForm                                controllers.LoginController.getForm
 
@@ -34,7 +34,6 @@ GET     /getlanguages                           controllers.DashboardController.
 GET     /getassignments                         controllers.DashboardController.getAssignments
 
 GET     /getproglanguages                       controllers.DashboardController.getProgLanguages
-
 
 GET     /getAllAwards                           controllers.DashboardController.getAllAwards
 
