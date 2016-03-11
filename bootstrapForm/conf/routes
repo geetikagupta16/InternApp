@@ -11,39 +11,39 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /webjars/*file                    controllers.WebJarAssets.at(file)
 
 
-GET     /dashboard                          controllers.DashboardController.getDashboard
+GET     /dashboard                              controllers.DashboardController.getDashboard
 
-POST     /addAward                          controllers.DashboardController.addAward
+POST     /addAward                              controllers.DashboardController.addAward
 
-POST     /addLanguage                          controllers.DashboardController.addLanguage
+POST     /addLanguage                           controllers.DashboardController.addLanguage
 
-POST     /addProgLanguage                          controllers.DashboardController.addProgLanguage
+POST     /addProgLanguage                       controllers.DashboardController.addProgLanguage
 
 GET        /adminDashboard                      controllers.DashboardController.getAdminDashboard
 
-GET     /getForm                            controllers.LoginController.getForm
+GET     /getForm                                controllers.LoginController.getForm
 
-POST    /auth                               controllers.LoginController.auth
+POST    /auth                                   controllers.LoginController.auth
 
-GET     /logout                          controllers.DashboardController.logout
+GET     /logout                                 controllers.DashboardController.logout
 
-GET     /getawards                       controllers.DashboardController.getAwards
+GET     /getawards                              controllers.DashboardController.getAwards
 
-GET     /getlanguages                       controllers.DashboardController.getLanguages
+GET     /getlanguages                           controllers.DashboardController.getLanguages
 
-GET     /getassignments                       controllers.DashboardController.getAssignments
+GET     /getassignments                         controllers.DashboardController.getAssignments
 
 GET     /getproglanguages                       controllers.DashboardController.getProgLanguages
 
-GET     /editAward/:awardId                              controllers.DashboardController.editAward(awardId:Int)
 
-GET     /getAllAwards                       controllers.DashboardController.getAllAwards
+GET     /getAllAwards                           controllers.DashboardController.getAllAwards
 
-GET     /getAllLanguages                       controllers.DashboardController.getAllLanguages
+GET     /getAllLanguages                        controllers.DashboardController.getAllLanguages
 
-GET     /getAllProgLanguages                       controllers.DashboardController.getAllProgLanguages
+GET     /getAllProgLanguages                    controllers.DashboardController.getAllProgLanguages
 
-GET     /getAllAssignments                       controllers.DashboardController.getAllAssignments
+GET     /getAllAssignments                      controllers.DashboardController.getAllAssignments
 
-GET     /getAllInterns                       controllers.DashboardController.getAllInterns
+GET     /getAllInterns                          controllers.DashboardController.getAllInterns
 
+POST     /addAssignment                          controllers.DashboardController.addAssignment

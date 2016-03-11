@@ -21,9 +21,10 @@ class AssignmentRepo @Inject() (protected val dbConfigProvider: DatabaseConfigPr
 
   import driver.api._
 
-  def insert(sno:Int,name:String,date:String,marks:Int,remarks:String,internId:Int) = {
-    val insertStatement = assignmentTableQuery += Assignment(sno,name,date,marks,remarks,internId)
-    db.run(insertStatement)
+  def insert(sno:Int,name:String,date:String,marks:Int,remarks:String,email:String) = {
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.flatMap(x=>db.run(assignmentTableQuery += Assignment(sno,name,date,marks,remarks,x.head.id)))
   }
 
   def getAll(email:String)={

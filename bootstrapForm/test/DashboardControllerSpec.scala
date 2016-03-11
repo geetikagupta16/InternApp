@@ -8,7 +8,7 @@ class DashboardControllerSpec extends Specification {
 
 
     "CHECK FOR Rendering of DashBoard page" in new WithApplication {
-      val res = route(FakeRequest(GET, "/getForm")).get
+      val res = route(FakeRequest(GET, "/dashboard").withSession("email"->"john@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
 
@@ -25,6 +25,31 @@ class DashboardControllerSpec extends Specification {
 
     " rendering of get Programming language form render" in new WithApplication {
       val res = route(FakeRequest(GET, "/getProgLanguages").withSession("email"->"john@gmail.com")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+
+
+    " rendering of get Award form for Admin" in new WithApplication {
+      val res = route(FakeRequest(GET, " /adminDashboard").withSession("email"->"admin@gmail.com")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+
+    " rendering of get Assignment" in new WithApplication {
+      val res = route(FakeRequest(GET, " /getAllAssignments ").withSession("email"->"admin@gmail.com")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+
+    " rendering of get Programming language" in new WithApplication {
+      val res = route(FakeRequest(GET, "/getAllProgLanguages  ").withSession("email"->"admin@gmail.com")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+    " rendering of all interns" in new WithApplication {
+      val res = route(FakeRequest(GET, "/getAllInterns").withSession("email"->"admin@gmail.com")).get
+      contentType(res) must beSome.which(_ == "text/html")
+    }
+
+    " rendering of get all languages" in new WithApplication {
+      val res = route(FakeRequest(GET, "/getAllLanguages  ").withSession("email"->"admin@gmail.com")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
   }

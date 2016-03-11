@@ -40,6 +40,34 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
     )
   )
 
+  val addAssignmentForm = Form(
+    tuple(
+      "name" -> nonEmptyText,
+      "date" -> nonEmptyText,
+      "marks" -> number,
+      "remarks" -> nonEmptyText
+    )
+  )
+
+  def addAssignment()=Action.async({ implicit request =>
+    addAssignmentForm.bindFromRequest.fold(
+      formError => Future {
+        BadRequest("ERROR")
+      },
+      assignmentData => {
+        request.session.get("email").map { user => {
+          val res = assignmentRepo.insert(1, assignmentData._1, assignmentData._2,assignmentData._3,assignmentData._4, user)
+          res.map(x => Redirect(routes.DashboardController.getDashboard))
+        }
+        }.getOrElse {
+          Future {
+            Unauthorized("sign in to see this page...!!!!")
+          }
+        }
+
+      })
+  })
+
 
   def getDashboard() = Action { implicit request =>
 
@@ -75,7 +103,7 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
 
       })
   })
-
+/*
   def editAward(awardId: Int) = Action.async({ implicit request =>
     request.session.get("email").map { user => {
       val awardList = awardRepo.getAll(user)
@@ -92,7 +120,7 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
       }
     }
   })
-
+*/
 
   def addAward() = Action.async({ implicit request =>
     addAwardForm.bindFromRequest.fold(
@@ -170,14 +198,14 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
 
   def getAllAssignments()=Action.async({implicit request=>
     val listassignment=assignmentRepo.getAll()
-    listassignment.map(x=>Ok(views.html.assignment(x)))
+    listassignment.map(x=>Ok(views.html.adminAssignment(x,addAssignmentForm)))
 
 
   })
 
   def getAllInterns()=Action.async({implicit request=>
-    val listintern=internRepo.getAll()
-    listintern.map(x=>Ok(views.html.interns(x)))
+    val listassignment=internRepo.getAll()
+    listassignment.map(x=>Ok(views.html.interns(x)))
 
 
   })
