@@ -45,7 +45,8 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
       "name" -> nonEmptyText,
       "date" -> nonEmptyText,
       "marks" -> number,
-      "remarks" -> nonEmptyText
+      "remarks" -> nonEmptyText,
+      "internId"->number
     )
   )
 
@@ -56,7 +57,7 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
       },
       assignmentData => {
         request.session.get("email").map { user => {
-          val res = assignmentRepo.insert(1, assignmentData._1, assignmentData._2,assignmentData._3,assignmentData._4, user)
+          val res = assignmentRepo.insert(1, assignmentData._1, assignmentData._2,assignmentData._3,assignmentData._4,assignmentData._5)
           res.map(x => Redirect(routes.DashboardController.getDashboard))
         }
         }.getOrElse {
@@ -69,17 +70,31 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
   })
 
 
-  def getDashboard() = Action { implicit request =>
-
+  def getDashboard() = Action.async( { implicit request =>
+if(!(request.session.get("email").isEmpty))
+  Future{
     Ok(views.html.dashboard())
 
   }
-
-  def getAdminDashboard() = Action {
-    implicit request =>
-      Ok(views.html.adminDashboard())
-
+    else
+  Future{
+    Unauthorized("sign in to see this page...!!!!")
   }
+  })
+
+  def getAdminDashboard() = Action.async( {
+    implicit request =>
+      if(!(request.session.get("email").isEmpty))
+        Future{
+          Ok(views.html.adminDashboard())
+
+        }
+      else
+        Future{
+          Unauthorized("sign in to see this page...!!!!")
+        }
+
+  })
 
   def logout() = Action { implicit request =>
     Redirect(routes.LoginController.getForm).withNewSession
@@ -103,6 +118,18 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
 
       })
   })
+
+  def deleteLanguage(sno:Int)=Action.async({ implicit request=>
+    request.session.get("email").map { user => {
+      val res = langRepo.delete(sno, user)
+      res.map(x => Redirect(routes.DashboardController.getDashboard))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("sign in to see this page...!!!!")
+      }
+    }
+  })
 /*
   def editAward(awardId: Int) = Action.async({ implicit request =>
     request.session.get("email").map { user => {
@@ -121,6 +148,21 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
     }
   })
 */
+
+  def deleteAward(id:Int)=Action.async({ implicit request=>
+    request.session.get("email").map { user => {
+      val res = awardRepo.delete(id, user)
+      res.map(x => Redirect(routes.DashboardController.getDashboard))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+    }
+
+
+
+  })
 
   def addAward() = Action.async({ implicit request =>
     addAwardForm.bindFromRequest.fold(
@@ -160,6 +202,19 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
         }
 
       })
+  })
+
+  def deleteProgLanguage(sno:Int)=Action.async({implicit request=>
+
+    request.session.get("email").map { user => {
+      val res = progLangRepo.delete(sno, user)
+      res.map(x => Redirect(routes.DashboardController.getDashboard))
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+    }
   })
 
   def getAwards() = Action.async({ implicit request =>

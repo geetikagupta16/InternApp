@@ -20,7 +20,7 @@ class AssignmentRepoSpec extends Specification{
   }
 
   "Assignment form add" in new WithApplication {
-    val result = await(assignmentRepo.insert(1,"Scala Assignment","2016-02-06",7,"Good","admin@gmail.com"))
+    val result = await(assignmentRepo.insert(1,"Scala Assignment","2016-02-06",7,"Good",1))
     result === 1
   }
 

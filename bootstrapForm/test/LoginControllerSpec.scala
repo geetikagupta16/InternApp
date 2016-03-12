@@ -45,7 +45,6 @@ class LoginControllerSpec extends Specification {
       ("email" -> "jon@gmail.com", "password" -> "abcdef")).get
       val result = Await.result(res, 2 seconds)
       status(res) must equalTo(SEE_OTHER)
-      contentAsString(res) must contain("Email or password is incorrect")
 
     }
   }

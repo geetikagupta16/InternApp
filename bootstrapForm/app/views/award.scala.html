@@ -25,37 +25,14 @@
                 <td>@award.internId</td>
 
                 <td><a href="#" id="editAward">Edit</a></td>
-                <td><a href="#">Delete</a></td>
+                <td><a href="@routes.DashboardController.deleteAward(award.id)">Delete</a></td>
              </tr>
         }
 
         </tbody>
     </table>
 
-<script type="text/javascript">
-event.preventDefault();
-$(document).ready(function(){
 
-alert("In ready");
-$('#editAward').onclick(function(){
-alert("In award");
-$.get("/editAward?id="+$(#awardId),function(data,status){
-
-
-});
-});
-
-
-
-$('#awardAdd').click(function(){
-
-$.post("/addAward",function(data,status){
-
-});
-});
-});
-
-</script>
 
     <div id="awardModal" class="modal fade" role="dialog">
         <div class="modal-dialog">

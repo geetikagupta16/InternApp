@@ -32,6 +32,10 @@ class ProgLanguageRepoSpec extends Specification{
     result == List(ProgLanguage(1,"java","bad",1))
   }
 
+  " Progamming Language delete" in new WithApplication {
+    val result = await(progLangRepo.delete(2,"john@gmail.com"))
+    result === 1
+  }
 
 
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)

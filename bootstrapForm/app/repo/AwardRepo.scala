@@ -27,6 +27,14 @@ class AwardRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
     res.flatMap(x=>db.run(awardTableQuery.filter(_.internId===x.head.id).to[List].result))
   }
 
+  def delete(id:Int,email:String)={
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.flatMap(x=>db.run(awardTableQuery.filter(_.internId===x.head.id).filter(_.id===id).delete))
+
+  }
+
+
   def getAll()={
 
     db.run{awardTableQuery.to[List].result}

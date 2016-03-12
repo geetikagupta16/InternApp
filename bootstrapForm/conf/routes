@@ -46,3 +46,12 @@ GET     /getAllAssignments                      controllers.DashboardController.
 GET     /getAllInterns                          controllers.DashboardController.getAllInterns
 
 POST     /addAssignment                          controllers.DashboardController.addAssignment
+
+GET     /deleteAward                             controllers.DashboardController.deleteAward(id:Int)
+
+GET     /deleteLanguage                             controllers.DashboardController.deleteLanguage(sno:Int)
+
+GET     /deleteProgLanguage                             controllers.DashboardController.deleteProgLanguage(sno:Int)
+
+
+

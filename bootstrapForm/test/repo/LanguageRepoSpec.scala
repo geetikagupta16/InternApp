@@ -31,6 +31,11 @@ class LanguageRepoSpec extends Specification{
     result == List(Language(1,"french","bad",1),Language(2,"Spanish","good",1))
   }
 
+  "Language delete" in new WithApplication {
+    val result = await(langRepo.delete(2,"john@gmail.com"))
+    result === 1
+  }
+
   def await[T](v: Future[T]): T = Await.result(v, Duration.Inf)
 
 }
