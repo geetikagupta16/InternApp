@@ -26,6 +26,12 @@ class LanguageRepoSpec extends Specification{
     result == List(Language(1,"french","bad",1))
   }
 
+  "Award update" in new WithApplication {
+    val result = await(langRepo.update(1,"hindi","good","john@gmail.com"))
+    result === 1
+  }
+
+
   "check for list of all languages" in new WithApplication {
     val result = await(langRepo.getAll())
     result == List(Language(1,"french","bad",1),Language(2,"Spanish","good",1))

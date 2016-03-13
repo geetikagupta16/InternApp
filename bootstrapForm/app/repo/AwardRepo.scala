@@ -34,13 +34,15 @@ class AwardRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
 
   }
 
+def update(sno:Int,name:String,details:String,email:String)={
+  val getList=internTableQuery.filter(_.email===email).to[List].result
+  val res=db.run(getList)
+  res.flatMap(x=>db.run( awardTableQuery.filter(_.internId===x.head.id).filter(_.id === sno).update(Award(sno,name,details,x.head.id))))
+}
 
   def getAll()={
-
     db.run{awardTableQuery.to[List].result}
   }
-
-
 
 }
 

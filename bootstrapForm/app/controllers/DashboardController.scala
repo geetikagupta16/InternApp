@@ -25,9 +25,26 @@ class DashboardController @Inject()(assignmentRepo: AssignmentRepo)(internRepo: 
     )
   )
 
+  val updateAwardForm = Form(
+    tuple(
+      "id" -> number,
+      "name" -> nonEmptyText,
+      "details" -> nonEmptyText
+    )
+  )
+
 
   val addLangForm = Form(
     tuple(
+      "lang" -> nonEmptyText,
+      "fluency" -> nonEmptyText
+    )
+  )
+
+  val updateLangForm = Form(
+    tuple(
+      "sno"->number,
+
       "lang" -> nonEmptyText,
       "fluency" -> nonEmptyText
     )
@@ -119,6 +136,44 @@ if(!(request.session.get("email").isEmpty))
       })
   })
 
+  def editLanguage(langId:Int)=Action.async({ implicit request=>
+    request.session.get("email").map { user => {
+      val langList = langRepo.getAll(user)
+      val res = langList.map(x => x.filter(_.sno == langId))
+      res.map(lang => {
+        updateLangForm.fill((lang.head.sno,lang.head.known, lang.head.fluency))
+        Ok(views.html.updateLanguage(updateLangForm))
+      })
+    }
+    }.getOrElse {
+      Future {
+        Unauthorized("Please sign in to see this page...!!!!")
+      }
+    }
+
+
+  })
+
+  def updateLanguage()=Action.async({implicit request=>
+    updateLangForm.bindFromRequest.fold(
+      formError => Future {
+        BadRequest("ERROR")
+      },
+      langData => {
+        request.session.get("email").map { user => {
+          val res = langRepo.update(langData._1, langData._2,langData._3, user)
+          res.map(x => Redirect(routes.DashboardController.getDashboard))
+        }
+        }.getOrElse {
+          Future {
+            Unauthorized("Please sign in to see this page...!!!!")
+          }
+        }
+
+      })
+
+  })
+
   def deleteLanguage(sno:Int)=Action.async({ implicit request=>
     request.session.get("email").map { user => {
       val res = langRepo.delete(sno, user)
@@ -130,15 +185,14 @@ if(!(request.session.get("email").isEmpty))
       }
     }
   })
-/*
+
   def editAward(awardId: Int) = Action.async({ implicit request =>
     request.session.get("email").map { user => {
       val awardList = awardRepo.getAll(user)
       val res = awardList.map(x => x.filter(_.id == awardId))
       res.map(award => {
-        addAwardForm.fill((award.head.id, award.head.name, award.head.details))
-        Ok(views.html.awardModal(addAwardForm))
-
+        updateAwardForm.fill((award.head.id, award.head.name, award.head.details))
+        Ok(views.html.updateAward(updateAwardForm))
       })
     }
     }.getOrElse {
@@ -147,8 +201,26 @@ if(!(request.session.get("email").isEmpty))
       }
     }
   })
-*/
 
+  def updateAward()=Action.async({implicit request=>
+    updateAwardForm.bindFromRequest.fold(
+      formError => Future {
+        BadRequest("ERROR")
+      },
+      awardData => {
+        request.session.get("email").map { user => {
+          val res = awardRepo.update(awardData._1, awardData._2, awardData._3, user)
+          res.map(x => Redirect(routes.DashboardController.getDashboard))
+        }
+        }.getOrElse {
+          Future {
+            Unauthorized("Please sign in to see this page...!!!!")
+          }
+        }
+
+      })
+
+    })
   def deleteAward(id:Int)=Action.async({ implicit request=>
     request.session.get("email").map { user => {
       val res = awardRepo.delete(id, user)

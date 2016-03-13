@@ -21,7 +21,7 @@ class LoginControllerSpec extends Specification {
 
 
     "CHECK FOR Rendering of form" in new WithApplication {
-      val res = route(FakeRequest(GET, "/getForm")).get
+      val res = route(FakeRequest(GET, "/login")).get
       contentType(res) must beSome.which(_ == "text/html")
     }
   

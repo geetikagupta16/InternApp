@@ -26,6 +26,12 @@ class LanguageRepo @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     res.flatMap(x=>db.run(languageTableQuery+=Language(sno,known,fluency,x.head.id)))
   }
 
+  def update(sno:Int,known:String,fluency:String,email:String)={
+    val getList=internTableQuery.filter(_.email===email).to[List].result
+    val res=db.run(getList)
+    res.flatMap(x=>db.run( languageTableQuery.filter(_.internId===x.head.id).filter(_.sno===sno).update(Language(sno,known,fluency,x.head.id))))
+  }
+
   def delete(sno:Int,email:String)={
     val getList=internTableQuery.filter(_.email===email).to[List].result
     val res=db.run(getList)

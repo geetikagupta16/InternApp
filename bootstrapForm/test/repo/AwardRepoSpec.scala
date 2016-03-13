@@ -24,6 +24,11 @@ class AwardRepoSpec extends Specification{
     result === 1
   }
 
+  "Award update" in new WithApplication {
+    val result = await(awardRepo.update(1,"IT tambola","Tambola","john@gmail.com"))
+    result === 1
+  }
+
   "check for list of awards" in new WithApplication {
     val result = await(awardRepo.getAll("john@gmail.com"))
     result == List(Award(1,"IT Quiz","Quiz",1))

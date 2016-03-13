@@ -23,8 +23,7 @@
                    <td>@award.name</td>
                   <td>@award.details</td>
                 <td>@award.internId</td>
-
-                <td><a href="#" id="editAward">Edit</a></td>
+                <td><a href="@routes.DashboardController.editAward(award.id)" id="editAward">Edit</a></td>
                 <td><a href="@routes.DashboardController.deleteAward(award.id)">Delete</a></td>
              </tr>
         }

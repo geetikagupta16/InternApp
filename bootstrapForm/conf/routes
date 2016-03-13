@@ -21,7 +21,7 @@ POST     /addProgLanguage                       controllers.DashboardController.
 
 GET      /adminDashboard                      controllers.DashboardController.getAdminDashboard
 
-GET     /getForm                                controllers.LoginController.getForm
+GET     /login                                controllers.LoginController.getForm
 
 POST    /auth                                   controllers.LoginController.auth
 
@@ -52,6 +52,15 @@ GET     /deleteAward                             controllers.DashboardController
 GET     /deleteLanguage                             controllers.DashboardController.deleteLanguage(sno:Int)
 
 GET     /deleteProgLanguage                             controllers.DashboardController.deleteProgLanguage(sno:Int)
+
+GET    /editAward                               controllers.DashboardController.editAward(id:Int)
+
+POST    /updateAward                            controllers.DashboardController.updateAward
+
+GET    /editLanguage                               controllers.DashboardController.editLanguage(sno:Int)
+
+POST    /updateLanguage                            controllers.DashboardController.updateLanguage
+
 
 
 
